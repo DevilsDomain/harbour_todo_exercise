@@ -28,6 +28,13 @@ mutation AddTODO($listId: Int!, $desc: String!) {
 }
 `;
 
+const REMOVE_TODO_MUTATION = gql`
+mutation Mutation($removeTodoId: Int!, $listId: Int!) {
+  removeTODO(id: $removeTodoId, listId: $listId)
+}
+`;
+
+
 
 export const Todos = ({ list = [], listId }: TodosProps) => {
 
@@ -40,9 +47,16 @@ const onAddHandler = async (desc: string) => {
   setTodos([...todos, res.addTODO]);
 };
 
-  const onRemoveHandler = (id: number) => {
-    console.log(`Remove todo ${id}`);
+  const onRemoveHandler = async (id: number) => {
+    const res = await client.request<{ removeTodo: Todo }>(REMOVE_TODO_MUTATION, {
+      listId: listId,
+      removeTodoId: id,
+    });
+    const newTodos = todos.filter((todo) => todo.id !== id);
+
+    setTodos(newTodos);
   };
+  
 
   const onFinishHandler = (id: number) => {
     console.log(`Mark todo ${id} as finished`);
