@@ -35,7 +35,7 @@ query GetTODOs($listId: Int!) {
 
 export default async function MyListPage({ params: { listId } }: MyListPageProps) {
   // TODO fetch list from server
-  const response = await client.request<{ getTODOs: GetTodosResponse[] }>(GET_TODOS_QUERY, {
+  const { getTODOs } = await client.request<{ getTODOs: GetTodosResponse[] }>(GET_TODOS_QUERY, {
     listId: parseInt(listId),
   });
   
@@ -45,7 +45,7 @@ export default async function MyListPage({ params: { listId } }: MyListPageProps
         listId={parseInt(listId)}
         // TODO swap with real data from query and
         // make sure to make the query from the server
-        list={response.getTODOs}
+        list={getTODOs}
       />
     </div>
   );
