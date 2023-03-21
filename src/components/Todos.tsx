@@ -34,6 +34,15 @@ mutation Mutation($removeTodoId: Int!, $listId: Int!) {
 }
 `;
 
+const FINISH_TODO_MUTATION = gql`
+mutation FinishTODO($finishTodoId: Int!, $listId: Int!) {
+  finishTODO(id: $finishTodoId, listId: $listId) {
+    finished
+    desc
+    id
+  }
+}
+`;
 
 
 export const Todos = ({ list = [], listId }: TodosProps) => {
@@ -58,9 +67,18 @@ const onAddHandler = async (desc: string) => {
   };
   
 
-  const onFinishHandler = (id: number) => {
-    console.log(`Mark todo ${id} as finished`);
+  const onFinishHandler = async (id: number) => {
+    const res = await client.request<{ finishTodo: Todo }>(FINISH_TODO_MUTATION, {
+      finishTodoId: id,
+      listId: listId,
+
+    });
+    const newTodos = todos.map((todo) =>
+    todo.id === id ? { ...todo, finished: true } : todo
+  );
+  setTodos(newTodos);
   };
+  
 
   return (
     <div>
