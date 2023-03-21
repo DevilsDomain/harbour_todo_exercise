@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from 'react';
 import { Heart } from '@/components/icons/Heart';
 import { Close } from '@/components/icons/Close';
@@ -16,9 +15,11 @@ type TodosProps = {
   list: Todo[];
 };
 
-export const Todos = ({ list = [], listId }: TodosProps) => {
-  const [todos, setTodos] = useState<Todo[]>(list);
 
+
+export const Todos = ({ list = [], listId }: TodosProps) => {
+
+const [todos, setTodos] = useState<Todo[]>(list);
   const onAddHandler = (desc: string) => {
     console.log(`Add todo ${desc}`);
   };
